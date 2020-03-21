@@ -1,24 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_moedas/components/money_card.dart';
+import 'package:projeto_moedas/components/money_card3.dart';
 
-import 'CustomDrawer.dart';
-import 'CustomGrid.dart';
-import 'money_card.dart';
+import 'home_page.dart';
+
 
 void main() {
   runApp(MaterialApp(
-    home: MyApp(),
     debugShowCheckedModeBanner: false,
+    home: HomePage(),
   ));
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  @override
-  Widget build(BuildContext context) {
-    return MoneyCard();
-  }
-}

@@ -1,33 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_moedas/components/CustomGrid.dart';
+import 'package:projeto_moedas/components/money_card3.dart';
 
-import 'CustomDrawer.dart';
-import 'CustomGrid.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return PageView(
-      children: <Widget>[
-        Scaffold(
+    return MaterialApp(
+      home: DefaultTabController(
+        length: 5,
+        child: Scaffold(
           appBar: AppBar(
-            title: Text("Rafael o Cinzento!"),
             centerTitle: true,
-            backgroundColor: Colors.black,
+            bottom: TabBar(
+              isScrollable: true,
+              tabs: [
+                Tab(icon: Text("CryptoMoedas")),
+                Tab(icon: Text("Moedas")),
+                Tab(icon: Text("Indices")),
+                Tab(icon: Text("Mercado")),
+                Tab(icon: Text("Ações")),
+              ],
+            ),
+            title: Text('Rafeles Dinheirator'),
           ),
-          body: CustomGrid(),
-          drawer: CustomDrawer(),
-          backgroundColor: Colors.grey,
+          body: TabBarView(
+            children: [
+              Scaffold(
+                body: CustomGrid(),
+              ),
+              MoneyCard3(),
+              Icon(Icons.directions_bike),
+              Icon(Icons.directions_bike),
+              Icon(Icons.directions_bike),
+            ],
+          ),
         ),
-        Scaffold(
-          appBar: AppBar(
-            title: Text("E Esse amor é Azul!"),
-            centerTitle: true,
-            backgroundColor: Colors.black,
-          ),
-          drawer: CustomDrawer(),
-          backgroundColor: Colors.blueAccent,
-        )
-      ],
+      ),
     );
   }
 }
