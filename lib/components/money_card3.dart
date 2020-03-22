@@ -49,6 +49,7 @@ class MoneyCard3 extends StatelessWidget {
                               child: Column(
                                 children: <Widget>[
                                   Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
                                       SizedBox(height: 10),
                                       cryptoNameSymbol(cryptoData[index]),
@@ -101,18 +102,24 @@ class MoneyCard3 extends StatelessWidget {
     return Align(
         alignment: Alignment.center,
         child: Container(
-          child: Row(
-            children: <Widget>[
-              Text(
-                '\nR\$${oCcy.format(data['buy'])}',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 30,
-                  
-                ),
-              )
-            ],
-          ),
+          child: Column(
+                children: <Widget>[
+                  Text(
+                    '\nR\$${oCcy.format(data['buy'])}',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 30,
+                    ),
+                  ),
+                  Text(
+                    '\n${data['variation']}%',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: data['variation'] < 0 ? Colors.red : Colors.green
+                    ),
+                  ),
+                ],
+              ),
         ));
   }
 }

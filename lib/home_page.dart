@@ -16,6 +16,7 @@ class _HomePageState extends State<HomePage> {
         length: 5,
         child: Scaffold(
           appBar: AppBar(
+            backgroundColor: Colors.deepPurpleAccent,
             centerTitle: true,
             bottom: TabBar(
               isScrollable: true,
