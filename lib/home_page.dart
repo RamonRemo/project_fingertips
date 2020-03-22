@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_moedas/components/CustomGrid.dart';
-import 'package:projeto_moedas/components/money_card3.dart';
+import 'package:projeto_moedas/screens/currency_screen.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
               Scaffold(
                 body: CustomGrid(),
               ),
-              MoneyCard3(),
+              CurrencyScreen(),
               Icon(Icons.directions_bike),
               Icon(Icons.directions_bike),
               Icon(Icons.directions_bike),
