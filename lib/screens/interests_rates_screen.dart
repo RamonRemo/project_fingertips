@@ -2,24 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:projeto_moedas/network/api_provider.dart';
 
-class CurrencyScreen extends StatefulWidget {
+class InterestRates extends StatefulWidget {
   @override
-  _CurrencyScreenState createState() => _CurrencyScreenState();
+  _InterestRates createState() => _InterestRates();
 }
 
-class _CurrencyScreenState extends State<CurrencyScreen> {
+class _InterestRates extends State<InterestRates> {
   var data;
-  String endpoint = "/currencies";
-
-  ApiProvider _api;
-  _CurrencyScreenState() {
-    _api = ApiProvider();
-  }
+  String endpoint = "/interests-rates";
 
   @override
   void initState() {
-    ApiProvider.getData(endpoint).then((map) {
-      data = map;
+    data = ApiProvider.getData(endpoint).then((map) {
+      print(map);
     });
   }
 
@@ -36,51 +31,34 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
               case ConnectionState.none:
-                return _buildInLoading();
+                return Container(
+                  width: 200.0,
+                  height: 200.0,
+                  alignment: Alignment.center,
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    strokeWidth: 5.0,
+                  ),
+                );
               default:
-                if (snapshot.hasError) return _buildEmptyState();
-
-                if (snapshot.data.length == 0) {
+                if (snapshot.hasError)
                   return Center(
                     child: Text(
-                      "Tá Vaziao",
+                      "Erro: é culpa da API, eu juro",
                       style: TextStyle(fontSize: 30, color: Colors.red),
                     ),
                   );
-                } else
-                  return createScreen(context, snapshot);
+                else
+                  return _createScreen(context, snapshot);
             }
           }),
     );
   }
 
-  Center _buildEmptyState() {
-    return Center(
-      child: Text(
-        "Erro: é culpa da API, eu juro",
-        style: TextStyle(fontSize: 30, color: Colors.red),
-      ),
-    );
-  }
-
-  Container _buildInLoading() {
-    return Container(
-      width: 200.0,
-      height: 200.0,
-      alignment: Alignment.center,
-      child: CircularProgressIndicator(
-        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-        strokeWidth: 5.0,
-      ),
-    );
-  }
-
-  Widget createScreen(BuildContext context, AsyncSnapshot snapshot) {
+  Widget _createScreen(BuildContext context, AsyncSnapshot snapshot) {
     return RefreshIndicator(
         // color: Colors.white,
         child: GridView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             crossAxisSpacing: 10.0,
@@ -119,6 +97,8 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                                   ),
                                   Row(
                                     children: <Widget>[
+                                      Spacer(),
+                                      SizedBox(height: 10),
                                       cryptoAmount(snapshot.data[index])
                                     ],
                                   )
@@ -142,18 +122,13 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
     return Align(
       alignment: Alignment.center,
       child: RichText(
-        textAlign: TextAlign.center,
         text: TextSpan(
-          text: '${data['name']}',
+          text: '${data['type']}',
           style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-            fontSize: 20,
-          ),
+              fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20),
           children: <TextSpan>[
             TextSpan(
-                text:
-                    '\n Atualizado: ${data['lastUpdate'].substring(8)}/${data['lastUpdate'].substring(5, 7)}',
+                text: '\n Atualizado: ${data['lastUpdate'].substring(8)} / ${data['lastUpdate'].substring(5,7)}',
                 style: TextStyle(
                     color: Colors.grey,
                     fontSize: 15,
@@ -171,45 +146,22 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
           child: Column(
             children: <Widget>[
               Text(
-                '\nR\$${mask.format(data['buy'])}',
+                
+                '${data['value'] > 0 ? "+ ${data['value']}%" : "- ${data['value']}%"}',
                 style: TextStyle(
-                  color: Colors.black,
+                  color: getColor(data['value']),
                   fontSize: 28,
                 ),
               ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 4.0),
-                    child: Text(
-                      '\n${data['variation']}%',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 18,
-                        color:
-                            data['variation'] < 0 ? Colors.red : Colors.green,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    child: data['variation'] < 0
-                        ? Icon(
-                            Icons.arrow_drop_down,
-                            color: Colors.red,
-                            size: 30,
-                          )
-                        : Icon(
-                            Icons.arrow_drop_up,
-                            color: Colors.green,
-                            size: 30,
-                          ),
-                  ),
-                ],
-              )
             ],
           ),
         ));
+  }
+
+  Color getColor(double value) {
+    if (value > 0 ){
+      return Colors.green;
+    }
+    return Colors.red;
   }
 }
