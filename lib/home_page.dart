@@ -3,6 +3,7 @@ import 'package:projeto_moedas/components/CustomGrid.dart';
 import 'package:projeto_moedas/screens/crypto_currency.dart';
 import 'package:projeto_moedas/screens/currency_screen.dart';
 import 'package:projeto_moedas/screens/interests_rates_screen.dart';
+import 'package:projeto_moedas/screens/teste.dart';
 
 import 'screens/economic_indexes.dart';
 
@@ -35,7 +36,7 @@ class _HomePageState extends State<HomePage> {
           ),
           body: TabBarView(
             children: [
-              CurrencyScreen(),
+              Teste(),
               CryptoCurrency(),
               EconomicIndexes(),
               InterestRates(),
